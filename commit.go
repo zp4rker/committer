@@ -23,7 +23,7 @@ func main() {
 		finalCommitMsg = &msg
 	}
 
-	i := 0
+	i := 1
 
 	count := 0
 	start := time.Now()
