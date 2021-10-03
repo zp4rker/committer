@@ -14,8 +14,8 @@ import (
 var finalCommitMsg *string
 
 func main() {
-	amount := flag.Int("-amount", 10000000, "the amount of commits to go up to")
-	finalCommitMsg = flag.String("-final-commit", "default", "the message for the final commit")
+	amount := flag.Int("amount", 10000000, "the amount of commits to go up to")
+	finalCommitMsg = flag.String("final-commit", "default", "the message for the final commit")
 	flag.Parse()
 
 	if *finalCommitMsg == "default" {
