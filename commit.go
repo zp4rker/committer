@@ -30,6 +30,7 @@ func main() {
 
 	if _, err := os.Stat(".git/"); os.IsNotExist(err) {
 		// init repo
+		fmt.Print("Initialising git repo...")
 		if err := exec.Command("git", "init").Run(); err != nil {
 			panic("Failed to execute git init!")
 		}
@@ -37,6 +38,7 @@ func main() {
 
 	// check if started before
 	started := false
+	fmt.Print("\033[2K\rChecking if already started...")
 	if bytes, err := exec.Command("git", "log", "-1", "--pretty=%B").Output(); err == nil {
 		str := strings.TrimSpace(string(bytes))
 		re := regexp.MustCompile(`Commit (\d+) of \d+`)
@@ -46,14 +48,18 @@ func main() {
 			match := re.FindStringSubmatch(str)[1]
 			i, _ = strconv.Atoi(match)
 			i++
+			fmt.Printf("\033[2K\rResuming from commit #%v", i)
 		}
 	}
 	// check current commit count
 	if !started {
+		fmt.Print("\033[2K\rCounting commits...")
 		cmd := exec.Command("git", "rev-list", "--count", "HEAD")
 		if bytes, err := cmd.Output(); err == nil {
 			if parsed, err := strconv.Atoi(strings.TrimSpace(string(bytes))); err == nil {
 				i = parsed
+				fmt.Printf("\033[2K\rCounted %v commits!", i)
+				i++
 			}
 		}
 	}
@@ -65,19 +71,17 @@ func main() {
 	}
 
 	// add files
+	fmt.Print("\033[2K\rStaging all files in case of any changes...")
 	if err := exec.Command("git", "add", "-A").Run(); err != nil {
 		panic("Failed to execute git add!")
 	}
-	// first commit
-	msg := fmt.Sprintf("Commit %v of %v", i, *amount)
-	if err := exec.Command("git", "commit", "--allow-empty", "-m", msg).Run(); err != nil {
-		panic("Failed to execute git commit!")
-	}
-	i++
-	count++
 
 	for; i < *amount; i++ {
-		msg = fmt.Sprintf("Commit %v of %v", i, *amount)
+		if count == 0 {
+			fmt.Print("\033[2K\rStarting commits now...")
+		}
+
+		msg := fmt.Sprintf("Commit %v of %v", i, *amount)
 		if err := exec.Command("git", "commit", "--allow-empty", "-m", msg).Run(); err != nil {
 			fmt.Print("\033[2K\rEncountered an error, waiting 5 seconds...")
 			time.Sleep(5 * time.Second) // wait 5 seconds
