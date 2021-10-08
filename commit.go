@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"os"
 	"os/exec"
 	"regexp"
@@ -98,6 +99,18 @@ func main() {
 		if secondsElapsed > 0 {
 			commitsPerSecond := int(float64(count) / secondsElapsed)
 			fmt.Printf(" %v commit/s", commitsPerSecond)
+
+			commitsLeft := float64(*amount - i)
+			eta := commitsLeft / float64(commitsPerSecond)
+			if duration, err := time.ParseDuration(fmt.Sprintf("%vs", eta)); err == nil {
+				if duration.Hours() > 1 {
+					fmt.Printf(" (ETA: %v hours)", math.Round(duration.Hours()))
+				} else if duration.Minutes() > 1 {
+					fmt.Printf(" (ETA %v minutes)", math.Round(duration.Minutes()))
+				} else {
+					fmt.Printf(" (ETA %v seconds)", math.Round(eta))
+				}
+			}
 		}
 	}
 
