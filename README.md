@@ -1,6 +1,10 @@
 # committer
 An auto-committer written in Go.
 
+## Milestones
+Some great feats reached with this tool.
+- 10 million @  https://github.com/zp4rker/10mil-commits
+
 ## Usage
 ### Setup
 ```
