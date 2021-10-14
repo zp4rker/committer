@@ -17,6 +17,7 @@ var finalCommitMsg *string
 func main() {
 	amount := flag.Int("amount", 10000000, "the amount of commits to go up to")
 	finalCommitMsg = flag.String("final-commit", "default", "the message for the final commit")
+	emptyMessages := flag.Bool("empty-messages", false, "whether or not to use empty commit messages")
 	flag.Parse()
 
 	if *finalCommitMsg == "default" {
@@ -82,8 +83,11 @@ func main() {
 			fmt.Print("\033[2K\rStarting commits now...")
 		}
 
-		msg := fmt.Sprintf("Commit %v of %v", i, *amount)
-		if err := exec.Command("git", "commit", "--allow-empty", "-m", msg).Run(); err != nil {
+		msg := ""
+		if !*emptyMessages {
+			msg = fmt.Sprintf("Commit %v of %v", i, *amount)
+		}
+		if err := exec.Command("git", "commit", "--allow-empty", "--allow-empty-message", "-m", msg).Run(); err != nil {
 			fmt.Print("\033[2K\rEncountered an error, waiting 5 seconds...")
 			time.Sleep(5 * time.Second) // wait 5 seconds
 			i-- // repeat this commit
