@@ -3,7 +3,10 @@ An auto-committer written in Go.
 
 ## Milestones
 Some great feats reached with this tool.
-- 10 million @  https://github.com/zp4rker/10mil-commits
+- 1 million  @ https://github.com/zp4rker/1mil-commits (coming soon)
+- 5 million  @ https://github.com/zp4rker/5mil-commits (coming soon)
+- 10 million @ https://github.com/zp4rker/10mil-commits
+- 25 million @ https://github.com/zp4rker/25mil-commits (coming soon)
 
 ## Usage
 ### Setup
