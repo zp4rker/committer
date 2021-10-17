@@ -18,6 +18,7 @@ func main() {
 	amount := flag.Int("amount", 10000000, "the amount of commits to go up to")
 	finalCommitMsg = flag.String("final-commit", "default", "the message for the final commit")
 	emptyMessages := flag.Bool("empty-messages", false, "whether or not to use empty commit messages")
+	ignoreHistory := flag.Bool("ignore-history", false, "whether or not to calculate the commit ammount from history")
 	flag.Parse()
 
 	if *finalCommitMsg == "default" {
@@ -40,21 +41,23 @@ func main() {
 
 	// check if started before
 	started := false
-	fmt.Print("\033[2K\rChecking if already started...")
-	if bytes, err := exec.Command("git", "log", "-1", "--pretty=%B").Output(); err == nil {
-		str := strings.TrimSpace(string(bytes))
-		re := regexp.MustCompile(`Commit (\d+) of \d+`)
+	if !*ignoreHistory {
+		fmt.Print("\033[2K\rChecking if already started...")
+		if bytes, err := exec.Command("git", "log", "-1", "--pretty=%B").Output(); err == nil {
+			str := strings.TrimSpace(string(bytes))
+			re := regexp.MustCompile(`Commit (\d+) of \d+`)
 
-		if re.MatchString(str) {
-			started = true
-			match := re.FindStringSubmatch(str)[1]
-			i, _ = strconv.Atoi(match)
-			i++
-			fmt.Printf("\033[2K\rResuming from commit #%v", i)
+			if re.MatchString(str) {
+				started = true
+				match := re.FindStringSubmatch(str)[1]
+				i, _ = strconv.Atoi(match)
+				i++
+				fmt.Printf("\033[2K\rResuming from commit #%v", i)
+			}
 		}
 	}
 	// check current commit count
-	if !started {
+	if !started && !*ignoreHistory {
 		fmt.Print("\033[2K\rCounting commits...")
 		cmd := exec.Command("git", "rev-list", "--count", "HEAD")
 		if bytes, err := cmd.Output(); err == nil {
