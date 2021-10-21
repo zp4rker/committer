@@ -135,7 +135,7 @@ func finalCommit() {
 				panic("Failed to execute git add!")
 			}
 			msg := *finalCommitMsg
-			if err := exec.Command("git", "commit", "--allow-empty", "-m", msg).Run(); err != nil {
+			if err := exec.Command("git", "commit", "--allow-empty", "--allow-empty-message", "-m", msg).Run(); err != nil {
 				panic("Failed to execute git commit!")
 			}
 
