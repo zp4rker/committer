@@ -130,7 +130,7 @@ func finalCommit() {
 	if bytes, err := exec.Command("git", "log", "-1", "--pretty=%B").Output(); err == nil {
 		str := strings.TrimSpace(string(bytes))
 
-		if str != *finalCommitMsg {
+		if str != *finalCommitMsg || *finalCommitMsg == "" {
 			if err := exec.Command("git", "add", "-A").Run(); err != nil {
 				panic("Failed to execute git add!")
 			}
@@ -139,6 +139,9 @@ func finalCommit() {
 				panic("Failed to execute git commit!")
 			}
 
+			if msg == "" {
+				msg = "Done! 😁"
+			}
 			fmt.Println("\033[2K\r" + msg)
 		} else {
 			fmt.Println("\033[2K\r" + "We already reached our goal! 😁")
