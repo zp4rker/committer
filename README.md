@@ -6,7 +6,8 @@ Some great feats reached with this tool.
 - 1 million @ https://github.com/zp4rker/1mil-commits
 - 5 million @ https://github.com/zp4rker/5mil-commits
 - 10 million @ https://github.com/zp4rker/10mil-commits
-- 25 million @ https://github.com/zp4rker/25mil-commits (coming soon)
+- 25 million @ https://github.com/zp4rker/25mil-commits
+- 50 million @ https://github.com/zp4rker/50mil-commits (coming soon)
 
 ## Usage
 ### Setup
